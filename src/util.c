@@ -135,6 +135,12 @@ execute(const char *cmd_line, int quiet)
     }
 }
 
+int is_valid_ip_addr( char* ip){
+    struct in_addr ip;
+    return inet_aton(name, &ip);
+
+}
+
 struct in_addr *
 wd_gethostbyname(const char *name)
 {
@@ -148,7 +154,15 @@ wd_gethostbyname(const char *name)
 
     LOCK_GHBN();
 
-    he = gethostbyname(name);
+    if (is_valid_ip_addr(name)) {
+        struct in_addr ip;
+        inet_aton(name, &ip);
+
+        he = gethostbyaddr((const void *)&ip, sizeof ip, AF_INET);
+
+    } else {
+        he = gethostbyname(name);
+    }    
 
     if (he == NULL) {
         free(addr);

@@ -33,3 +33,4 @@ src/Makefile.in
 stamp-h1
 wifidog-msg.html
 wifidog.spec
+.vscode/
